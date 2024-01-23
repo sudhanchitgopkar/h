@@ -9,12 +9,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Pushes test file
+    - name: Pushes dir
       uses: dmnemec/copy_file_to_another_repo_action@main
       env:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
-        source_file: '.'
+        source_file: 'algorithmic-fairness'
         destination_repo: 'sudhanchitgopkar/sudhanchitgopkar.github.io'
         user_email: 'sudhanchitgopkar@gmail.com'
         user_name: 'sudhanchitgopkar'
