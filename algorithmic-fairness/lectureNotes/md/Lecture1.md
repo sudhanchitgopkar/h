@@ -3,7 +3,6 @@
 **Sudhan Chitgopkar, Harvard University** 
 `sudhanchitgopkar[at]g.harvard.edu`
 
-
 ---
 
 ### Fairness Focus
