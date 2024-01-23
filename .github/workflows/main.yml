@@ -16,7 +16,6 @@ jobs:
       with:
         source_file: '.'
         destination_repo: 'sudhanchitgopkar/sudhanchitgopkar.github.io'
-        destination_folder: 'h'
         user_email: 'sudhanchitgopkar@gmail.com'
         user_name: 'sudhanchitgopkar'
         commit_message: 'Copied notes to site'
