@@ -1,0 +1,119 @@
+**Capital Markets**
+                Sudhan Chitgopkar, Harvard University
+                `sudhanchitgopkar[at]g.harvard.edu`
+
+# Lecture 1
+## Capital Markets Overview
+### Types of Assets
+- Real assets (investments)
+    - require an input of resources today and deliver output of resources later
+    - Determine productive capacity of an economy
+- Financial assets
+    - Claims to the output produced by real assets
+- *Capital markets are environments where financial assets are traded*
+
+### Financial Asset Classification
+- Fixed income securities: 
+    - Promise to make fixed payments in the future
+    - Bills (short-term, < 1 year), bonds (long-term, > 10 years)
+- Equities (stocks): 
+    - Claims to a share of the profit of a corporation
+- Derivative securities: 
+    - Make payments that depend on the prices of other financial assets
+    - Futures, swaps, options
+
+### Utility of Capital Markets
+- Shift the timing of consumption so it doesn't have to coincide with timing of income
+- Allocate risk (share amongst many or distribute to those who can bear it)
+- Allocate resources to the most productive real investment
+
+## Functional Perspectives
+- Institutional details are abstracted away
+- Concepts remain the same across capitalist countries
+
+## Basic Concepts of Finance
+- Arbitrage: What do we know about asset-prices by assuming there are no risk-free profit opportunities
+- Optimality: What is the best combination of risky financial assets given their returns and an individual investor's preferences?
+- Equilibrium: What is the nature of asset prices and allocations when all investors have optimized and markets clear?
+
+## Asset Framework
+- Two periods, *now* and *future*
+- Finite number of states, $S$ of states may occurr in the future
+    - some state $s \in \{1, \dots, S\}$
+- Finite number of assets, $N$ available
+    - some asset $n \in \{1, \dots, N\}$
+    - Assets cost money *now* and pay off in the *future*
+    - Each asset has a payoff profile
+        - $n$ pays off $X_{ns}$ in state $x$
+        - $n$ has payoff vector $[X_{n1}, \dots, X_{nS}]$
+        - Current price of $n$ is $p_n$
+    - $N$ assets are defined by an $N \times S$ matrix, $X$
+        $$\begin{array}{ccc}\\
+        X_{11} & \dots & X_{1S}\\
+        \vdots & \dots & \vdots\\
+        X_{N1} & \dots & X_{NS}
+        \end{array}$$
+    - The price of $N$ assets can be stacked into an $N \times 1$ vector 
+        $$\begin{array}{c}\\
+        p_1\\
+        \vdots\\
+        p_N
+        \end{array}$$
+- We can form a portfolio by buying $w_n$ units of asset $n$ for each $n \in \{1, \dots, N\}$
+    - If we stack the number of shares into an $N \times 1$ vector, we get 
+        $$w = \begin{array}{c}\\
+        w_1\\
+        \vdots\\
+        w_N
+        \end{array}$$
+    - And then we can find the payoff of our portfolio over time using $w^TX$
+        $$w^Tx = [\sum_{n = 1}^N w_nX_{n1} + \dots \sum_{n = 1}^N w_nX_{nS}]$$
+    - Finally, the price of our portfolio is $w^Tp = \sum_{n = 1}^N w_np_n$
+
+### Arrow-Debreu Securities
+- Portfolio that pays $1 in state $s$ and $0 in $s'$
+    - Called an Arrow-Debreu security
+- Has state price (current price) $q_s$ for state $s$
+- With $S$ AD securities, one for each state, the payoff matrix is the identity matrix:
+    $$X^{AD} = \begin{array}{cccc}\\
+    1 & 0 & \dots & 0\\
+    0 & 1 & \dots & 0\\
+    \vdots & \dots & \ddots & \vdots\\
+    0 & 0 & \dots & 1
+    \end{array}$$
+    - This market is **complete** because we can obtain any payoff profile by combining securities
+    - This completeness extends to real markets:
+        - We can contrive some combination of assets where $w^TX = [1, 0, \dots, 0]$ *as long as $N = S$ and assets are non-redundant (no asset payoff is a linear combination of others)*
+
+!!! Tip
+    Thus, real markets are also complete!
+
+
+## Arbitrage Theory
+*Arbitrage opportunity*: investment strategy that:
+- never requires a cash outflow now or in the future
+- Generates a cash inflow in 1+ states in the future (but not now)
+
+- Start by assuming no arbitrage opportunities
+    - Has powerful implications for relative prices of assets
+
+### Implications of No Arbitrage
+- Law of One Price: 2 assets or portfolios with the same payoffs in every future state must have the same price
+    - Otherwise buy cheap one and sell the expensive one!
+- AD securities *must* have positive state prices
+    - If ever negative, buy! cash inflow today and in 1 future state with no costs in any other state
+    - If ever zero, buy it! Cash flow in 1+ future state with no costs at any other state
+
+- Generates particularly strong results when markets are complete
+- Tells us about relative pricing of asset, but not absolute
+- To understand absolute pricing, we need:
+    - Optimization: the demand for consumption in state, $s$
+    - Equilibrium: adjustment of price, $q_s$ to ensure supply = demand
+
+
+<!-- Markdeep: -->
+<head>
+<link rel="stylesheet" href="https://morgan3d.github.io/markdeep/latest/latex.css?">
+
+<style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
+</head>
