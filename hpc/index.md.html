@@ -1,0 +1,125 @@
+**High Performance Computing**
+                Sudhan Chitgopkar, Harvard University
+                `sudhanchitgopkar[at]g.harvard.edu`
+
+# Lecture 1
+## Moore's Law
+- Integrated circuit (IC) resources double every 18-24 months
+    - Every two years, you get a 2x performance boost wihtout changing your code
+    - Originally thought this would be a result of decreasing transistor size, but transistors have already gotten extremely small
+- *Can this keep going?*
+- Two alternatives to satisfy Moore's law as transistor density reaches limit
+    - Increase clock rate
+    - Operate at power wall but increase number of processor cores
+        - Modern Moore's Law, double number of cores per microprocessor generation every two years and we need to deal with the troubles of parallel computing
+
+**The Power Wall**
+- *capacitive load*: related to the number of transistors on the chip
+- *switch rate*: related to the clock cycle of the chip
+- Possible to decrease power consumption proportional to clock rate increase by reducing voltage
+    - However, reducing voltage makes transistors leaky, which dissapates energy (currently the cause for 40% of power leakage)
+
+## Serial Computing
+- Series of instructions processed sequentially
+- Executed on a single processor, with only one instruction executed at any given time
+
+## Parallel Computing
+- Problem divided into discrete chunks that can be solved concurrently
+- Each chunk processed sequentially but run simultaneously on different processors
+- Requires a *control/communication/coordination mechanism*
+- Both data structures and algorithms must be suitable for dividing a problem into discrete chunks
+
+## Terminology
+- *Node*: a single entity with multiple processors like CPUs, GPUs, TPUs, etc (e.g. laptop, desktop, Raspberry Pi)
+- *Cluster*: Arbitrary number of nodes connected by a local network
+- *Task*: A logically discrete section of computational work. Can be thought of as a program (or program-like). 
+    - Parallel programs consist of multiple tasks running m
+- *Socket*: Mounting location of a CPU onto a motherboard
+- *Pipelining*: Breaking a task into steps processed by different processor units
+- *Shared memory*: All processors have direct access to common physical memory (all parallel tasks have the same picture of memory)
+- *Symmetric Multi-processor (SMP)*: Shared memory and address space across multiple processors
+- *Distributed memory*: tasks can only "see" local machine memory and must communicate with memory on other machines to get their data
+- *Communication*: the process by which parallel tasks exchange data
+- *Synchronization*: coordination of parallel tasks in real time, associated with communication
+- *Granularity*: amount of computation vs. communication
+    - Fine-grained: small amounts of computation and lots of communication in between
+    - Coarse-grained: large amounts of computation and less communication
+- *Observed speedup*: speedup of parallelized code: $$S = \frac{T(1)}{T(p)} = \frac{\text{Wall-clock time of serial execution}}{\text{Wall-clock time of parallel execution}}$$
+- *Parallel overhead*: The amount of time required to coordinate parallel tasks, includes:
+    - Task start-up time
+    - Synchronizations
+    - Data communication
+    - Termination time
+- *Scalability*: Ability for a parallel system to demonstrate proportional increase in parallel speedup with adddition of more resources
+    - Function of hardware, application algorithm, parallelization overhead, etc
+
+## Flynn's Taxonomy
+- Method of classifying parallel computers based on instruction stream and data stream
+- *Single Instruction Single Data (SISD)*
+    - One instruction stream is being acted on by the CPU during one clock cycle
+    - Only one data stream is being used as the input during one clock cycle
+- *Single Instruction Multiple Data (SIMD)*
+    - All processing units execute the same instruction on a given clock cycle
+    - But each processing unit can operate on a different data element
+    - Good for specialized problems characterized by large amounts of regularity (graphics/image processing)
+    - Synchronous and deterministic
+
+- *Multiple Instruction Single Data (MISD)*
+    - Each unit operates on data independently through different instructions
+    - But a single data stream is fet into the multiple processing units
+    - Few uses
+- *Multiple Instruction Multiple Data (MIMD)*
+    - Each processor may execute different instructions on a different data stream
+    - Most popular type of parallel computer
+    - Most modern supercomputers use this
+!!! WARNING
+    MISD not in scope of this course!
+
+# Lecture 2
+## Hardware Organization
+- *Buses*: Collection of electricul circuits that carry bytes of information between components
+- *Words*: Transferred chunks of bytes
+    - Word size is a system parameter
+    - Most word sizes are either 4 bytes (32 bit) or 8 bytes (64 bit)
+- *Bandwidth*: Maximum rate at which byte chunks can be transferred
+- *Main memory*: Temporary storage which holds a program and the data it manipulates during execution
+    - Consistes of DRAM (dynamic random access memory), dunamoc meaning that memory cells are refreshed periodically
+- *Processor*: Interprets/executes instructions from main memory
+    - At the core is a register called` the program counter
+    - At any point in time, PC points to a machine instruction
+    - Processor uses instruction set architecture (ISA), commonly RISC and CISC
+- Use main memory, register file, and ALI
+    - Register file consists of all registers
+
+## Compilation
+1. Pre-processor: comments removed, adds include files
+2. Compiler: ranslates to assembly
+3. Assembler: translates assembly code input  $\rightarrow$ machine language 
+4. Linker: links all necessary programs/files into one to create executable binary
+
+## Von Neumann Architecture
+![Von Neumann Architecture](figs/2-vn_architecture.png)
+
+- Bottleneck: separation of memory and processor
+    - Latency: response time for information to arrive from initial request
+    - Bandwidth: the throughput of a system
+
+**Three main modifications to recent CPUs**
+
+- Caches: Reduce processor-memory gap
+    - L1, closest to ALU and smallest $\rightarrow$ L3, furthest from ALU and biggest
+- Virtual memory: Helps cache between DRAM and persistent storage
+- Low-level parallelism: *covered later on!*
+
+## Memory
+- Virtual memory: an abstraction that provides each process with the illusion that it has power over main memory
+    - Each process sees *virtual address space*
+    - Virtual memory protects address space of each process from corruption by other processes
+
+
+<!-- Markdeep: -->
+<head>
+<link rel="stylesheet" href="https://morgan3d.github.io/markdeep/latest/latex.css?">
+
+<style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
+</head>
