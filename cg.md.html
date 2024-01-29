@@ -1,0 +1,81 @@
+**Computer Graphics**
+                Sudhan Chitgopkar, Harvard University
+                `sudhanchitgopkar[at]g.harvard.edu`
+# Lecture 1
+## Objects and Representations
+- Represent objects using triangles
+    - "*if we know how to do triangles, we know how to do cats*"
+    - Each triangle is an object which can (mainly) be represented by three vertices
+    - Vertices are represented by coordinates and other associated data
+        - Need coordinates $(x, y, z)$
+        - Could also want colors, normal vector, texture, etc. Called `attributeData`
+        - Stored in the `vertexBuffer` in OpenGL
+    - All pixels within the vertices are determined and those pixels are colored as desired
+
+## The `draw` Call
+- Once all data is passed in, `draw` call is made
+    - Each vertex and corresponding attributes are fed into the vertex shader from the vertex buffer
+    - The vertex shader then returns a `gl_Position` (and possibly other data, called varying variables)
+        - Uniform variables may also be applied *uniformly* to all the points passed into the vertex shader
+    - Finally, this is passed to the Assembler which then feeds into the Rasterizer
+        - Passed in groups of three
+        - OpenGL Rasterizer calculates the pixels within the triangle (3 vertices passed in)
+            - Each pixel within the triangle gets varying variables proportional to the vertices they're closest to
+            - Each of these variables is passed into the fragment shader, which uses the variable and unform variables (if applicable) to return a screen color
+        - Finally, screen color is plotted onto frame buffer
+
+# Lecture 2
+## OpenGL Terminology
+- `glfw` is a cross-platform windowing system
+    - For real applications, use separate platform-dependent windowing library
+    - Opens windows
+    - Informs you when some event occurs (e.g. mouse move, button press, window resize)
+        - Callback functions handle these events
+        - Meed global vars to access state since we aren't in control of the call seq
+
+- `glew` allows programs to be run on windows, not needed for Windows/MacOS
+- `glsl` is a shading language
+    - allows you to write programs to be executed per vertex and to be executed for each fragment/pixel
+    - OpenGL is told to compile, link, and load these shaders
+
+### OpenGL Resources
+!!! Warning
+    Often inconsistent and confusing
+
+- Make calls to `glCreateShader`, `glGenBuffer`, `glGenTexture` to create OpenGL resources
+    - Returns `GLUint` with buffer data
+    - When done, free object with `glDelete`
+
+### OpenGL and C++
+- In C++, resources managed by wrapping each resource type in its own cpp class
+    - the constructor calls `glGen*` oe `glCreate*`
+    - destructor calls `glDelete*`
+    - **We will use capital 'G' for these types**
+    - Whenever object goes out of scorpe, destructor automatically gets called in cpp
+    - Don't want to allow objects to be copied so that we know exactly when they get destroyed
+
+- Cannot make GL calls without window, so can't have any global vars
+    - Can only have gloabl poiners to objects, then construct objects in body of code
+
+- We also need to put data into our buggers
+    - For `glProgram` we can use handles directly as arguments (e.g. `glUseProgram()`)
+    - For buffers/textures, 2-step process
+        - Bind resource using its handle to an openGL target
+        - then make openGL calls that depend on the target
+        - Sometimes these openGL calls will use the target name (not handle name), other times the target is implicitly assumed
+
+### The Main Loop
+- Initializes required objects
+- Infinite loop
+    - calls `draw` then `glfw` waits for event
+    - upon event, updates and then another `draw` call
+- When we draw, update a different buffer
+    - Once drawing is complete, swap to buffer with the drawing
+
+
+<!-- Markdeep: -->
+<head>
+<link rel="stylesheet" href="https://morgan3d.github.io/markdeep/latest/latex.css?">
+
+<style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
+</head>
