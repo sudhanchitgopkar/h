@@ -72,6 +72,62 @@
 - When we draw, update a different buffer
     - Once drawing is complete, swap to buffer with the drawing
 
+# Lecture 3
+## Coordinate System
+- Bottom left will always be $(-1, -1)$ and top right will always be $(1, 1)$
+    - This is the "canonical cube"
+    - This leads to potential distortions!
+    - To fix, pass information to vertex shader (uniform variable)
+        - Vertex shader can adjust `gl_position` appropriately
+- For textures and pictures,
+    - Lower left will always be $(0, 0)$ and top right will always be $(1,1)$
+    - This is the "unit cube"
+    - `lerp` between two images, $A$ and $B$, with some interpolation factor (`lerper`), $T$ as $$(1 - T)A + TB$$
+- For windows/windowing,
+    - Top left will always be $(0,0)$ and bottom right will be $(w, h)$
+    - To convert this to semi-unit-cube system, do
+    ```c linenumbers
+    y = g_windowHeight - y - 1
+    ```
+
+## 3D Geometry
+- We need to represent the geometry of points in space and perform transormations upon them
+- Points are represented by a coordinate vector
+    - Specififed with respect to an agreed-upon coordinate system
+    - Point consists of $(x, y, z)$ coords as follows:
+    $$\begin{array}{c}
+    x\\
+    y\\
+    z
+    \end{array}$$
+
+### Data Types
+- Point: represents a place
+- Vector: represents motion/offset between 2 ordered points
+- Coordinate vector (**c**)
+- Coordinate system 
+    - "Basis" for vectors
+
+### Coordinate Systems: Basis
+!!! ERROR ToDo
+    Fix formatting on arrays
+
+- A basis is a minimal set of vectors needed to get *any* vector using vectors in the basis (and vector multiplication and addition)
+    - Minimal = linearly independent
+- Dimension is the number of basis elements needed
+    - For us, it will be 3
+- Thus, we can use the basis to get all vectors uniquely using $$\vec{v} = \sum_i c_i\vec{b}_i = [\vec{b_1} \quad \vec{b_2} \quad \vec{b_3}] 
+    \begin{array}{c}
+        c_1\\
+        c_2\\
+        c_3
+    \end{array}$$
+
+### Linear Transformations
+- A linear transform $l: V \rightarrow V$
+- Satisfies 2 rules:
+    1. $l(\vec{v} + \vec{u}) = l(\vec{v}) + l(\vec{u})$
+    1. $l(\alpha\vec{v}) = \alpha l(\vec{v})$
 
 <!-- Markdeep: -->
 <head>
