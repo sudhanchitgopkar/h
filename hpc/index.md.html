@@ -75,7 +75,7 @@
 !!! WARNING
     MISD not in scope of this course!
 
-# Lecture 2
+# Lecture 2: Hardware
 ## Hardware Organization
 - *Buses*: Collection of electricul circuits that carry bytes of information between components
 - *Words*: Transferred chunks of bytes
@@ -116,10 +116,83 @@
     - Each process sees *virtual address space*
     - Virtual memory protects address space of each process from corruption by other processes
 
+# Lecture 3: Caches
+![Von Neumann Architecture with Caches](figs/3-vn_cache.png)
+
+- *Cache*: small on-chip memories
+    - L1: Smallest and closest to ALU (32kB size, exlcusive to core)
+        - L1i holds instructions exclusively
+        - L1d holds data exclusively
+    - L2: Intermediate after L1, often shared amongst few cores (256 - 512 kB)
+    - L3: Last level cache (LLC) closest to DRAM. Shared among cores (4 - 30 MB)
+- Latency is different across cache levels
+    - As lookups in closer caches fail, we move to higher and higher caches (then eventually to memory)
+
+!!! Tip Why is this important?
+    Understanding how caching and data locality works allows us to optimize it and improve runtime!
+
+## Locality
+- Well written programs exhibit good locality and run fast
+    - Programs with good locality reference data items that are spatially near each other (spatial locality) or were recently referenced (temporal locality)
+- Let's look at an example
+    ```c linenumbers
+        int v[N];
+        int sum;
+
+        for (int i = 0; i < N; i++) {
+            sum += v[i];
+        } //for
+    ```
+    - `sum` has good temporal locality, but `v[i]` does *not* have good temporal locality because each value `v[i]` is new and hasn't been used recently before but `sum` *has* been recently used
+- Let's consider another example:
+    ```c linenumbers
+        for (int loop = 0; loop < 10; loop++) {
+            for (int i = 0; i < N; i++) {
+                sum += v[i];
+            } //for
+        } //for
+    ```
+    [A]
+
+
+### Spatial Locality
+- References memory "close" to already-referenced memory
+    ```c linenumbers
+        int sum;
+        for (int i = 0; i < N; i++) {
+            sum += v[i];
+        } //for
+    ```
+    - This has good spatial locality because every element is next to the previous one
+- Strided memory access
+    - Algorithms may not always be one-stride
+    - Stride-$k$ patterns visit every $k$th element of a contiguous vector
+- Higher dimensional arrays
+    - All memory is a contiguous vector of bytes
+    - In `C/C++`, row-major ordering is used
+        - This means the `j` index (column) is faster
+
+## Cache Terminology
+- *Cache block/line*: Fixed packet that moves back and forth between cache levels/main memory
+- *Cache hit*: Data requested by the processor that *is* found in level $k$ and read directly from there
+- *Cache miss*: Data requested by processor that is *not* found at the level $k$ cache. It is fetched from $k + 1$ and some line is evicted from $k$ according to a rule (e.g. LRU)
+- *Hit/miss rate*: Fraction of memory accesses that are cache hits/misses in the level $k$ cache
+- *Miss penalty*: Time to replace a block in level $k$ with a block from $k + 1$
+
+## Cache Lines & Misses
+- When data element from a data structure is accessed, multiple coalesced elemnts are loaded at once, not just one
+- Types of cache misses:
+    - *Compulsory/cold misses*: inavoidable, occur when the cache is empty or when trying to access data we've never seen before
+    - *Capacity misses*: when the cache is full so you can't access/store an element that you've previously seen
+    - *Conflict misses*: Two elements compete for the same spot in the cache despite it not being full
+- Cache line placement policies:
+!!! ERROR ToDo
+    Fill out notes from here onwards $\rightarrow$ conflict misses
+
 
 <!-- Markdeep: -->
 <head>
 <link rel="stylesheet" href="https://morgan3d.github.io/markdeep/latest/latex.css?">
 
 <style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
-</head>
+</head>`
