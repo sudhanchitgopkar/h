@@ -189,6 +189,86 @@
 !!! ERROR ToDo
     Fill out notes from here onwards $\rightarrow$ conflict misses
 
+# Lecture 4: Shared Memory
+- When cores cooperate, they share/exhange data
+    - Done by sharing a memory address space where multiple cores have read and write privileges
+- Parallelism in applications:
+    - *Task-level parallelism (TLP)*: Identifies tasks that can be executed in parallel. Shared memory programming belongs here.
+    - *Data-level parallelism (DLP)*: Manhy data items exist which can be operated on simultaneously
+    - *Instruction-level parallelism (ILP)*: Exploits *DLP*  through things like pipelining or speculative execution
+    - *Vector architectures, GPIs, and vector instructions*: Exploits *DLP* by running same instruction to collection of data
+    - *Thread level parallelism*: Exploits *DLP* or *TLP* in a hardware model that alloes for interaction between parallel threads
+## Processes vs Threads
+- Process
+    - Is an execution sequence within OS
+    - Owns a virtual address space
+    - Has an execution state
+    - Managed by OS
+- Thread
+    - Can execute a sequence of instructions within a running process
+    - All threads with the same process share application data in main memory
+    - Threads are cheaper to create than processes
+    - Can be controlled by the developer
+- Hardware threads
+    - Help hide latency by splitting one physical core into two logical cores
+    - Software threads are scheduled for execution on one logical core
+    - Context switch between the two logical CPUs when one is idle/waiting for data
+
+### Processes
+- No process can access the virtual memory of another process
+- Communication between processes, though, is important
+    - This is implemented by the OS with pipes, sockets, etc/
+
+### Threads
+- Independent stream of instructions scheduled to run by OS
+- Processes can create *many threads*
+- Each thread:
+    - Shares memory of the process they belong to with the other threads
+    - Has its own state and private memory on the stack
+    - Cheap to create
+
+### Race Conditions
+- With shared memory, multiple trajectories are possible and **all** must yield the correct result
+
+!!! ERROR ToDo
+    Review "Race Condition in `Counter` Class"
+
+# Lecture 5
+
+!!! TIP Identifying Race Conditions
+    Ask – should there be a specific order among the `read` and `write` operations in code that is executed by multiple threads in parallel
+
+- Compilers don't enforce ordering during race conditions because this sacrifices performance and optimization
+- Solution: use a memory consistency model that defines some *synchronization primitives* which dictate allowde/disallowed optimization
+!!! WARNING Synchronization Primitives
+    Synchronization means serialization! Use of syncrhonization primitives is expensive and hurts the parallelizability of your code.
+
+## Memory Consistency Model
+- The result of any execution is the same as if it was done sequentially (*total order*), and the operations of each individual process appear in the sequence specified by its program (*partial order*)
+- The *critical section* of code is the time between acquiring and releasing exclusive access to some data
+
+### Sequential Model
+- Read/write order is consistent with program order
+- Easiest and most intuitive but too restrictive for compiler optimization and not widely used
+
+### Relaxed Consistency Models
+- **Maintaining sequential consistency is expensive**
+- We can relax the rigorous sequential requirement and allow `read` and `write` operations to complete out of order
+- This requires explicit synchronization operations to enforce sequential consistency
+
+## Mutual Exclusion
+- Sometimes, we need to control access to critical sections. A `lock` (sometimes called `mutex`) is an abstract data type that implements mutual exclsion
+- *Mutual exclusion*: critical sections of different threads don't overlap
+- *Memory consistent*: operations are visible to all threads after the critical section
+- *Progress*: If a thread is not inside the critical section, another thread can always enter
+- *Starvation-freedom* (or deadlock-freedom): if a thread wants to enter the critical section, it will eventually succeed
+
+# Lecture 6: `OpenMP`
+- `OpenMP`: Open Multi-processing
+    - Compiler directives
+    - Runtime lib calls
+    - Environment variables
+
 
 <!-- Markdeep: -->
 <head>
